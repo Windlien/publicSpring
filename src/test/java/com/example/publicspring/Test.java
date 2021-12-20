@@ -1,0 +1,31 @@
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class Test {
+    public static void main(String[] args) {
+        List<Integer> list = Arrays.asList(2, 3, 1, 5);
+        list.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+        System.out.println("1："+list);
+
+        list = Arrays.asList(2, 3, 1, 5);
+        list.sort(((i1,i2)-> i1 - i2));
+        System.out.println("2："+list);
+
+        list = Arrays.asList(2, 3, 1, 5);
+        list.sort(Comparator.comparingInt(i -> i));
+        System.out.println("2："+list);
+        list.forEach(i -> System.out.print("元素："+i));
+    //实例3：把Lambda赋值给变量
+        Runnable task = ()->{
+            System.out.println("\nhello lambda!");
+        };
+        new Thread(task).start();
+
+    }
+}
