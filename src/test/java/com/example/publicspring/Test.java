@@ -28,4 +28,15 @@ public class Test {
         new Thread(task).start();
 
     }
+     public  void main1(String[] args) {
+        String s1 = "111111111111111111111111111";
+        int i1 = 1000000000;
+        int i = 1;
+        List<String> list1 = new ArrayList<>();
+        while (i < i1) {
+            i++;
+            list1.add(s1);
+            System.out.println("list1个数" + list1.size());
+        }
+    }
 }
