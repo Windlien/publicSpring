@@ -13,4 +13,9 @@ public class UserController {
     public String queryById(@PathVariable("id")Long id){
         return "id";
     }
+
+    @GetMapping("{name}")
+    public String queryById(@PathVariable("name")String name){
+        return "id";
+    }
 }
