@@ -16,6 +16,7 @@ public class UserController {
 
     @GetMapping("{name}")
     public String queryById(@PathVariable("name")String name){
+        String b = "b";
         return "id";
     }
 }
