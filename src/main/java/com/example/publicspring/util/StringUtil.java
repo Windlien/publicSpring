@@ -31,4 +31,40 @@ public class StringUtil extends StrUtil {
     public static String toUnderlineCase(CharSequence str) {
         return NamingCase.toUnderlineCase(str);
     }
+     public static boolean isNotBlank(String s) {
+        return !isBlank(s);
+    }
+
+    /**
+     * return (s == null) || "".equals(s.trim())
+     */
+    public static boolean isBlank(String s) {
+        return (s == null) || "".equals(s.trim());
+    }
+
+    public static boolean isNotBlank(Object str) {
+        return !isBlank(str);
+    }
+
+    public static boolean isBlank(Object str) {
+        return (str == null || "".equals(str.toString().trim()));
+    }
+    /*
+    *  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    * */
 }
