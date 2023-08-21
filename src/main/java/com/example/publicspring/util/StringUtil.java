@@ -49,22 +49,5 @@ public class StringUtil extends StrUtil {
     public static boolean isBlank(Object str) {
         return (str == null || "".equals(str.toString().trim()));
     }
-    /*
-    *  <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    * */
+
 }
