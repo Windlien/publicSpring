@@ -49,5 +49,11 @@ public class StringUtil extends StrUtil {
     public static boolean isBlank(Object str) {
         return (str == null || "".equals(str.toString().trim()));
     }
+    public static boolean isY(String value) {
+        return "Y".equals(value);
+    }
+    public static boolean isN(String value) {
+        return "N".equals(value);
+    }
 
 }
