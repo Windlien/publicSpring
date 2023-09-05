@@ -1,9 +1,27 @@
 package com.example.publicspring;
 
+import cn.hutool.core.io.FileUtil;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.security.*;
 import org.apache.commons.io.FileUtils;
+
+import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test {
@@ -79,5 +97,78 @@ public class Test {
                 FileUtils.deleteDirectory(file);
             }
         }
+    }
+
+    //PDF电子签章
+    public static class PDFSigner {
+        public static final String KEYSTORE = "path/to/keystore";
+        public static final char[] PASSWORD = "password".toCharArray();
+        public static final String ALIAS = "alias";
+        public static final String CERTIFICATE = "path/to/certificate";
+
+        public static void main(String[] args) throws Exception {
+            // 加载密钥库
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+            ks.load(new FileInputStream(KEYSTORE), PASSWORD);
+            PrivateKey pk = (PrivateKey) ks.getKey(ALIAS, PASSWORD);
+            Certificate[] chain = ks.getCertificateChain(ALIAS);
+
+            // 创建PdfReader和PdfStamper
+            PdfReader reader = new PdfReader("input.pdf");
+            FileOutputStream os = new FileOutputStream("output.pdf");
+            PdfStamper stamper = PdfStamper.createSignature(reader, os, '\0', null, true);
+
+            // 创建签名区域
+            com.itextpdf.text.Rectangle rect = new com.itextpdf.text.Rectangle(36, 648, 144, 780);
+            PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+            appearance.setVisibleSignature(rect, 1, "signature");
+
+            // 设置签名属性
+            appearance.setCrypto(null, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
+            appearance.setReason("reason");
+            appearance.setLocation("location");
+            appearance.setSignDate(Calendar.getInstance());
+
+            // 创建外部摘要对象
+            ExternalDigest digest = new BouncyCastleDigest();
+
+            // 创建签名对象
+            PrivateKeySignature signature = new PrivateKeySignature(pk, DigestAlgorithms.SHA256, BouncyCastleProvider.PROVIDER_NAME);
+
+            // 对PDF文件进行签名
+            MakeSignature.signDetached(appearance, digest, signature, chain, null, null, 0, MakeSignature.CryptoStandard.CMS);
+
+
+            // 关闭stamper和reader
+            stamper.close();
+            reader.close();
+        }
+
+        public void addImage(Document document, PdfWriter pdfWriter) throws DocumentException, IOException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+            String imageFileName = "SIGN_SEAL_IMAGE_FILE";
+            byte[] imageByte = FileUtil.readBytes(new File(imageFileName));
+
+            com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(imageByte);
+            image.scalePercent(62);
+
+            float x = document.right();
+
+            float currentHeight = currentHeight(pdfWriter);
+            float v = x - image.getScaledWidth();
+            image.setAbsolutePosition(v, currentHeight - 20f);
+            image.setAlignment(com.itextpdf.text.Image.MIDDLE);
+            PdfContentByte directContent = pdfWriter.getDirectContent();
+            directContent.addImage(image);
+        }
+    }
+    public static float currentHeight(PdfWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+
+        Method getPdfDocument = writer.getClass().getDeclaredMethod("getPdfDocument");
+        getPdfDocument.setAccessible(true);
+        PdfDocument pdfD = (PdfDocument) getPdfDocument.invoke(writer);
+        Field getHeight = pdfD.getClass().getDeclaredField("currentHeight");
+        getHeight.setAccessible(true);
+        Object o = getHeight.get(pdfD);
+        return Float.valueOf(o.toString());
     }
 }
