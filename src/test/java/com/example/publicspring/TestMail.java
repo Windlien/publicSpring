@@ -2,7 +2,7 @@ package com.example.publicspring;
 
 import cn.hutool.extra.mail.Mail;
 import cn.hutool.extra.mail.MailAccount;
-import com.example.publicspring.util.StringUtil;
+import com.example.publicspring.windLien.util.StringUtil;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import java.security.GeneralSecurityException;
