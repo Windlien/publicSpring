@@ -1,11 +1,14 @@
-package com.example.publicspring.util;
+package com.example.publicspring.windLien.util;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.text.NamingCase;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import java.util.Collection;
 
 @Slf4j
 public class StringUtil extends StrUtil {
@@ -56,4 +59,18 @@ public class StringUtil extends StrUtil {
         return "N".equals(value);
     }
 
+    public static String join(@SuppressWarnings("rawtypes") Collection values, String split, String quotes) {
+        if (CollectionUtil.isEmpty(values)) {
+            log.warn("Empty collection.", new Exception("Stack for coder."));
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        values.forEach((Object o) ->
+                sb.append(quotes).append(o == null ? "<null>" : o.toString()).append(quotes).append(split));
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+    public static boolean isInteger(String text) {
+        return NumberUtil.isInteger(text);
+    }
 }
