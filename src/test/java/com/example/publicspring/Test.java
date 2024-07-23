@@ -124,7 +124,7 @@ public class Test {
             appearance.setVisibleSignature(rect, 1, "signature");
 
             // 设置签名属性
-            appearance.setCrypto(null, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
+//            appearance.setCrypto(null, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
             appearance.setReason("reason");
             appearance.setLocation("location");
             appearance.setSignDate(Calendar.getInstance());
@@ -133,10 +133,10 @@ public class Test {
             ExternalDigest digest = new BouncyCastleDigest();
 
             // 创建签名对象
-            PrivateKeySignature signature = new PrivateKeySignature(pk, DigestAlgorithms.SHA256, BouncyCastleProvider.PROVIDER_NAME);
+//            PrivateKeySignature signature = new PrivateKeySignature(pk, DigestAlgorithms.SHA256, BouncyCastleProvider.PROVIDER_NAME);
 
             // 对PDF文件进行签名
-            MakeSignature.signDetached(appearance, digest, signature, chain, null, null, 0, MakeSignature.CryptoStandard.CMS);
+//            MakeSignature.signDetached(appearance, digest, signature, chain, null, null, 0, MakeSignature.CryptoStandard.CMS);
 
 
             // 关闭stamper和reader
@@ -170,5 +170,8 @@ public class Test {
         getHeight.setAccessible(true);
         Object o = getHeight.get(pdfD);
         return Float.valueOf(o.toString());
+    }
+    public static void Test2() {
+       System.out.println("test2");
     }
 }
