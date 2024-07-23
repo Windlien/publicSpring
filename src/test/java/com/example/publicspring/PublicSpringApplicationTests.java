@@ -20,11 +20,6 @@ class PublicSpringApplicationTests {
 
     }
     public static void main(String[] args) throws IOException {
-       /* System.out.println(ss("q_", () -> "FD_DATA_INST='0000000'"));
-        consumerString(s -> System.out.println(s));
-        consumerString((obj) -> deal(obj));
-        导出格式化
-        */
         String n = "123456.78901";
         SXSSFWorkbook wb = new SXSSFWorkbook();
         SXSSFSheet sheet = wb.createSheet();

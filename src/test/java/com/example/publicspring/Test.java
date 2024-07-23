@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main1(String[] args) throws IOException, InterruptedException {
         moveFiles();
         //delDirNotEndWith();
     }
@@ -55,7 +55,7 @@ public class Test {
         new Thread(task).start();
     }
 
-    public  void main1(String[] args) {
+    public  void main2(String[] args) {
         String s1 = "111111111111111111111111111";
         int i1 = 1000000000;
         int i = 1;
@@ -174,4 +174,20 @@ public class Test {
     public static void Test2() {
        System.out.println("test2");
     }
+
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> hashtable = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; ++i) {
+            if (hashtable.containsKey(target - nums[i])) {
+                return new int[]{hashtable.get(target - nums[i]), i};
+            }
+            hashtable.put(nums[i], i);
+        }
+        return new int[0];
+    }
+    public static void main(String[] args) {
+        int[] ints = twoSum(new int[]{2, 7, 11, 15}, 9);
+        System.out.println(ints);
+    }
+
 }
