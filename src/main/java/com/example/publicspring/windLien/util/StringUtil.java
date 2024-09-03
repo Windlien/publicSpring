@@ -12,6 +12,8 @@ import java.util.Collection;
 
 @Slf4j
 public class StringUtil extends StrUtil {
+    private static final int PAD_LIMIT = 8192;
+
     private StringUtil() {
         JButton jButton = new JButton();
         jButton.doClick();
@@ -73,4 +75,59 @@ public class StringUtil extends StrUtil {
     public static boolean isInteger(String text) {
         return NumberUtil.isInteger(text);
     }
+
+    /**
+     * <p>Right pad a String with a specified String.</p>
+     *
+     * <p>The String is padded to the size of {@code size}.</p>
+     *
+     * <pre>
+     * StringUtil.rightPad(null, *, *)      = null
+     * StringUtil.rightPad("", 3, "z")      = "zzz"
+     * StringUtil.rightPad("bat", 3, "yz")  = "bat"
+     * StringUtil.rightPad("bat", 5, "yz")  = "batyz"
+     * StringUtil.rightPad("bat", 8, "yz")  = "batyzyzy"
+     * StringUtil.rightPad("bat", 1, "yz")  = "bat"
+     * StringUtil.rightPad("bat", -1, "yz") = "bat"
+     * StringUtil.rightPad("bat", 5, null)  = "bat  "
+     * StringUtil.rightPad("bat", 5, "")    = "bat  "
+     * </pre>
+     *
+     * @param str    the String to pad out, may be null
+     * @param size   the size to pad to
+     * @param padStr the String to pad with, null or empty treated as single space
+     * @return right padded String or original String if no padding is necessary,
+     * {@code null} if null String input
+     */
+    public static String rightPad(final String str, final int size, String padStr) {
+        if (str == null) {
+            return null;
+        }
+        if (isEmpty(padStr)) {
+            padStr = SPACE;
+        }
+        final int padLen = padStr.length();
+        final int strLen = str.length();
+        final int pads = size - strLen;
+        if (pads <= 0) {
+            return str; // returns original String when possible
+        }
+        if (padLen == 1 && pads <= PAD_LIMIT) {
+            return rightPad(str, size, String.valueOf(padStr.charAt(0)));
+        }
+
+        if (pads == padLen) {
+            return str.concat(padStr);
+        } else if (pads < padLen) {
+            return str.concat(padStr.substring(0, pads));
+        } else {
+            final char[] padding = new char[pads];
+            final char[] padChars = padStr.toCharArray();
+            for (int i = 0; i < pads; i++) {
+                padding[i] = padChars[i % padLen];
+            }
+            return str.concat(new String(padding));
+        }
+    }
+
 }
