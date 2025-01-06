@@ -36,7 +36,8 @@ public class StringUtil extends StrUtil {
     public static String toUnderlineCase(CharSequence str) {
         return NamingCase.toUnderlineCase(str);
     }
-     public static boolean isNotBlank(String s) {
+
+    public static boolean isNotBlank(String s) {
         return !isBlank(s);
     }
 
@@ -54,9 +55,11 @@ public class StringUtil extends StrUtil {
     public static boolean isBlank(Object str) {
         return (str == null || "".equals(str.toString().trim()));
     }
+
     public static boolean isY(String value) {
         return "Y".equals(value);
     }
+
     public static boolean isN(String value) {
         return "N".equals(value);
     }
@@ -72,6 +75,7 @@ public class StringUtil extends StrUtil {
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
+
     public static boolean isInteger(String text) {
         return NumberUtil.isInteger(text);
     }
